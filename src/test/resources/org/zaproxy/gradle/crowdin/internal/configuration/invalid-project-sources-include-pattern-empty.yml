@@ -1,0 +1,13 @@
+projects:
+  - id: 123
+    sources:
+      - dir: "src/main/resources"
+        crowdinPath:
+          dir: "/data"
+          filename: "%file_pathname%"
+        exportPattern:
+          dir: "/data"
+          filename: "%file_pathname%"
+        includes:
+          - pattern: ""
+

@@ -1,0 +1,5 @@
+projects:
+  - id: 123
+    sources:
+      - dir: "src/main/resources"
+
