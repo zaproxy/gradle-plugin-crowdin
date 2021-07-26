@@ -1,0 +1,20 @@
+projects:
+  - id: 123
+    sources:
+      - dir: "dir/%tokenA%/%tokenB%"
+        outputDir: "outputDir/%tokenA%/%tokenB%"
+        crowdinPath:
+          dir: "/crowdinPath/dir/%tokenA%/%tokenB%"
+          filename: "crowdinPath/filename/%tokenA% %tokenB%"
+        exportPattern:
+          dir: "/exportPattern/dir/%tokenA%/%tokenB%"
+          filename: "exportPattern/filename/%tokenA% %tokenB%"
+        includes:
+          - pattern: "pattern/%tokenA%/%tokenB%.html"
+            type: "type %tokenA% %tokenB%"
+            crowdinPathFilename: "crowdinPathFilename %tokenA% %tokenB%"
+            exportPatternFilename: "exportPatternFilename %tokenA% %tokenB%"
+            translatableElements:
+              - "translatableElement1 %tokenA% %tokenB%"
+              - "translatableElement2 %tokenA% %tokenB%"
+

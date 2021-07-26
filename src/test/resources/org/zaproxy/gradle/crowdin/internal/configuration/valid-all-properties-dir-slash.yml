@@ -1,0 +1,19 @@
+projects:
+  - id: 123
+    sources:
+      - dir: "src/main/resources"
+        outputDir: "src/main/resources/translated"
+        crowdinPath:
+          dir: "/"
+          filename: "%file_pathname%"
+        exportPattern:
+          dir: "/"
+          filename: "export_%file_pathname%"
+        includes:
+          - pattern: "Messages.properties"
+            type: "properties"
+            crowdinPathFilename: "Strings.properties"
+            exportPatternFilename: "MessagesA.properties"
+            translatableElements:
+              - "xpath"
+
