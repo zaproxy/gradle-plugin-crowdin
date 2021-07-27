@@ -50,7 +50,7 @@ import org.zaproxy.gradle.crowdin.internal.remote.RemoteVfs;
 
 public abstract class CrowdinTask extends DefaultTask {
 
-    private static final int PAGE_SIZE = 250;
+    protected static final int PAGE_SIZE = 250;
 
     private CrowdinConfiguration crowdinConfiguration;
     private Client crowdinClient;
