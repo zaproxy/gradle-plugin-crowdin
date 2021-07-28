@@ -28,6 +28,7 @@ import org.zaproxy.gradle.crowdin.tasks.DownloadProjectTranslation;
 import org.zaproxy.gradle.crowdin.tasks.ListAllCrowdinFiles;
 import org.zaproxy.gradle.crowdin.tasks.ListCrowdinFiles;
 import org.zaproxy.gradle.crowdin.tasks.ListSourceFiles;
+import org.zaproxy.gradle.crowdin.tasks.ListTranslationProgress;
 import org.zaproxy.gradle.crowdin.tasks.UploadSourceFiles;
 
 /** The plugin to integrate with Crowdin. */
@@ -55,6 +56,9 @@ public class CrowdinPlugin implements Plugin<Project> {
     public static final String LIST_CROWDIN_FILES_TASK_NAME = "crowdinListFiles";
 
     public static final String LIST_ALL_CROWDIN_FILES_TASK_NAME = "crowdinListAllFiles";
+
+    public static final String LIST_TRANSLATION_PROGRESS_TASK_NAME =
+            "crowdinListTranslationProgress";
 
     @Override
     public void apply(Project project) {
@@ -127,6 +131,14 @@ public class CrowdinPlugin implements Plugin<Project> {
         tasks.register(
                 LIST_ALL_CROWDIN_FILES_TASK_NAME,
                 ListAllCrowdinFiles.class,
+                t -> {
+                    t.getAuthToken().set(extension.getCredentials().getToken());
+                    t.getConfigurationFile().set(extension.getConfiguration().getFile());
+                    t.getConfigurationTokens().set(extension.getConfiguration().getTokens());
+                });
+        tasks.register(
+                LIST_TRANSLATION_PROGRESS_TASK_NAME,
+                ListTranslationProgress.class,
                 t -> {
                     t.getAuthToken().set(extension.getCredentials().getToken());
                     t.getConfigurationFile().set(extension.getConfiguration().getFile());
