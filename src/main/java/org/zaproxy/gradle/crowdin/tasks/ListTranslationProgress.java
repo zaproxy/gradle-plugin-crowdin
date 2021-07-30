@@ -24,6 +24,7 @@ import com.crowdin.client.core.http.exceptions.HttpException;
 import com.crowdin.client.core.model.ResponseList;
 import com.crowdin.client.core.model.ResponseObject;
 import com.crowdin.client.translationstatus.model.LanguageProgress;
+import com.crowdin.client.translationstatus.model.Progress.Words;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -41,6 +42,7 @@ public abstract class ListTranslationProgress extends CrowdinTask {
         setDescription("Lists the translation progress of the projects.");
 
         getSortByProgress().convention(false);
+        getDetailed().convention(false);
     }
 
     @Input
@@ -54,6 +56,17 @@ public abstract class ListTranslationProgress extends CrowdinTask {
         getSortByProgress().set(true);
     }
 
+    @Input
+    public abstract Property<Boolean> getDetailed();
+
+    @Option(
+            option = "detailed",
+            description =
+                    "If the translation progress of the words and phrases should be shown as well.")
+    public void allProgress() {
+        getDetailed().set(true);
+    }
+
     @TaskAction
     void list() {
         CrowdinConfiguration crowdinConfiguration = getCrowdinConfiguration();
@@ -63,7 +76,7 @@ public abstract class ListTranslationProgress extends CrowdinTask {
             getProgress(project).stream()
                     .map(ListTranslationProgress::toLanguageEntry)
                     .sorted(getComparator())
-                    .forEach(l -> System.out.println("  " + l));
+                    .forEach(this::printProgress);
             System.out.println();
         }
     }
@@ -101,7 +114,31 @@ public abstract class ListTranslationProgress extends CrowdinTask {
     }
 
     private static LanguageEntry toLanguageEntry(LanguageProgress progress) {
-        return new LanguageEntry(progress.getLanguageId(), progress.getTranslationProgress());
+        return new LanguageEntry(
+                progress.getLanguageId(),
+                progress.getTranslationProgress(),
+                progress.getWords(),
+                progress.getPhrases());
+    }
+
+    private void printProgress(LanguageEntry language) {
+        System.out.println("  " + language);
+        boolean detailedProgress = getDetailed().get();
+        if (detailedProgress) {
+            printProgress("Words:   ", language.getWords());
+            printProgress("Phrases: ", language.getPhrases());
+        }
+    }
+
+    private void printProgress(String name, Words progress) {
+        System.out.println(
+                "    "
+                        + name
+                        + progress.getTranslated()
+                        + " of "
+                        + progress.getTotal()
+                        + ". Approved: "
+                        + progress.getApproved());
     }
 
     private static class LanguageEntry {
@@ -109,11 +146,15 @@ public abstract class ListTranslationProgress extends CrowdinTask {
         private final String id;
         private final String name;
         private final int progress;
+        private final Words phrases;
+        private final Words words;
 
-        LanguageEntry(String id, int progress) {
+        LanguageEntry(String id, int progress, Words words, Words phrases) {
             this.id = id;
             this.name = createLocale(id).getDisplayName(Locale.ROOT);
             this.progress = progress;
+            this.words = words;
+            this.phrases = phrases;
         }
 
         String getName() {
@@ -122,6 +163,14 @@ public abstract class ListTranslationProgress extends CrowdinTask {
 
         int getProgress() {
             return progress;
+        }
+
+        Words getWords() {
+            return words;
+        }
+
+        Words getPhrases() {
+            return phrases;
         }
 
         @Override
