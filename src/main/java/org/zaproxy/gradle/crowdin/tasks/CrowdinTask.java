@@ -42,6 +42,7 @@ import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
 import org.zaproxy.gradle.crowdin.CrowdinPluginException;
+import org.zaproxy.gradle.crowdin.internal.SimpleLogger;
 import org.zaproxy.gradle.crowdin.internal.configuration.ConfigurationException;
 import org.zaproxy.gradle.crowdin.internal.configuration.CrowdinConfiguration;
 import org.zaproxy.gradle.crowdin.internal.configuration.CrowdinProject;
@@ -54,6 +55,7 @@ public abstract class CrowdinTask extends DefaultTask {
 
     private CrowdinConfiguration crowdinConfiguration;
     private Client crowdinClient;
+    private SimpleLogger simpleLogger;
 
     protected CrowdinTask() {
         setGroup("Crowdin");
@@ -94,6 +96,14 @@ public abstract class CrowdinTask extends DefaultTask {
         return crowdinClient;
     }
 
+    @Internal
+    protected SimpleLogger getSimpleLogger() {
+        if (simpleLogger == null) {
+            simpleLogger = new LoggerWrapper(getLogger());
+        }
+        return simpleLogger;
+    }
+
     protected <R> R apiRequest(Function<Client, R> access) {
         try {
             return access.apply(getCrowdinClient());
@@ -106,7 +116,8 @@ public abstract class CrowdinTask extends DefaultTask {
 
     protected LocalVfs createLocalVfs(CrowdinProject crowdinProject) {
         try {
-            return new LocalVfs(getProject().getProjectDir().toPath(), crowdinProject);
+            return new LocalVfs(
+                    getProject().getProjectDir().toPath(), crowdinProject, getSimpleLogger());
         } catch (IOException e) {
             throw new CrowdinPluginException(
                     "An error occurred while enumerating the local files, cause: " + e.getMessage(),

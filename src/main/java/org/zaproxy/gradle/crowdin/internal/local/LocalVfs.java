@@ -32,6 +32,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.zaproxy.gradle.crowdin.internal.SimpleLogger;
 import org.zaproxy.gradle.crowdin.internal.VfsNode;
 import org.zaproxy.gradle.crowdin.internal.configuration.CrowdinProject;
 import org.zaproxy.gradle.crowdin.internal.configuration.FileSet;
@@ -39,7 +40,8 @@ import org.zaproxy.gradle.crowdin.internal.configuration.Source;
 
 public class LocalVfs extends VfsNode<LocalFile> {
 
-    public LocalVfs(Path projectDir, CrowdinProject crowdinProject) throws IOException {
+    public LocalVfs(Path projectDir, CrowdinProject crowdinProject, SimpleLogger logger)
+            throws IOException {
         PathBuilder pathBuilder = new PathBuilder(projectDir.getFileName().toString());
 
         for (Source source : crowdinProject.getSources()) {
@@ -47,6 +49,14 @@ public class LocalVfs extends VfsNode<LocalFile> {
 
             for (FileSet fileSet : source.getIncludes()) {
                 for (Path file : enumerateFiles(dir, fileSet.getPattern())) {
+                    if (Files.size(file) == 0) {
+                        logger.lifecycle(
+                                "Ignoring empty file in project {}: {}",
+                                crowdinProject.getId(),
+                                file);
+                        continue;
+                    }
+
                     addFile(pathBuilder, source, dir, fileSet, file);
                 }
             }
