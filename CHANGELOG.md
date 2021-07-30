@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - A task to list the translation progress, `crowdinListTranslationProgress`.
 
+### Fixed
+- Ignore empty source files.
+
 ## [0.1.0] - 2021-07-26
 First alpha release.
 

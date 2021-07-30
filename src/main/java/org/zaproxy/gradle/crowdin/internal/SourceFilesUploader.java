@@ -51,8 +51,12 @@ public class SourceFilesUploader {
 
     public void upload() {
         for (Source source : project.getSources()) {
-            localVfs.diff(remoteVfs, source.getCrowdinPath().getDir())
-                    .traverse(this::processResults);
+            String crowdinDir = source.getCrowdinPath().getDir();
+            if (localVfs.get(crowdinDir) == null) {
+                continue;
+            }
+
+            localVfs.diff(remoteVfs, crowdinDir).traverse(this::processResults);
         }
         nodesToRemove.forEach(node -> clientWrapper.removeItem(project.getId(), node.getData()));
     }

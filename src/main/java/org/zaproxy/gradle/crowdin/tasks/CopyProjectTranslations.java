@@ -26,7 +26,6 @@ import org.gradle.api.tasks.InputDirectory;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.options.Option;
-import org.zaproxy.gradle.crowdin.internal.SimpleLogger;
 import org.zaproxy.gradle.crowdin.internal.TranslationsCopier;
 import org.zaproxy.gradle.crowdin.internal.configuration.CrowdinConfiguration;
 import org.zaproxy.gradle.crowdin.internal.configuration.CrowdinProject;
@@ -57,27 +56,9 @@ public abstract class CopyProjectTranslations extends CrowdinTask {
         Path baseDir = getProject().getProjectDir().toPath();
         Path packagesDir = getTranslationsPackageDirectory().getAsFile().get().toPath();
 
-        TranslationsCopier copier = new TranslationsCopier(packagesDir, new LoggerWrapper());
+        TranslationsCopier copier = new TranslationsCopier(packagesDir, getSimpleLogger());
         for (CrowdinProject project : configuration.getProjects()) {
             copier.copy(project, baseDir);
-        }
-    }
-
-    private class LoggerWrapper implements SimpleLogger {
-
-        @Override
-        public void lifecycle(String message, Object... objects) {
-            getLogger().lifecycle(message, objects);
-        }
-
-        @Override
-        public void warn(String message, Object... objects) {
-            getLogger().warn(message, objects);
-        }
-
-        @Override
-        public void error(String message, Object... objects) {
-            getLogger().error(message, objects);
         }
     }
 }
