@@ -82,7 +82,7 @@ public class TranslationsCopier {
     private void copyFiles(
             ZipFile translations, DirFilenamePair exportPattern, Path baseOutputDir) {
         String path = normalizeDir(exportPattern.getDir());
-        int idx = path.length() + 1;
+        int idx = path.length();
         translations.stream()
                 .filter(e -> e.getName().startsWith(path))
                 .forEach(
@@ -110,6 +110,6 @@ public class TranslationsCopier {
     }
 
     private static String normalizeDir(String dir) {
-        return dir.substring(1, dir.length());
+        return dir.substring(1, dir.length()) + "/";
     }
 }

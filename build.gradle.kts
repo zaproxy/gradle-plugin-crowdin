@@ -23,7 +23,7 @@ repositories {
 }
 
 group = "org.zaproxy.gradle"
-version = "0.3.0-SNAPSHOT"
+version = "0.2.1"
 
 tasks.withType<PluginUnderTestMetadata>().configureEach {
     pluginClasspath.from(configurations.compileOnly)
