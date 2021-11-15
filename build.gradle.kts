@@ -6,9 +6,9 @@ plugins {
     `java-gradle-plugin`
     `maven-publish`
     `kotlin-dsl`
-    id("com.gradle.plugin-publish") version "0.14.0"
-    id("com.diffplug.spotless") version "5.12.1"
-    id("com.github.johnrengelman.shadow") version "7.0.0"
+    id("com.gradle.plugin-publish") version "0.17.0"
+    id("com.diffplug.spotless") version "5.17.1"
+    id("com.github.johnrengelman.shadow") version "7.1.0"
     id("net.ltgt.errorprone") version "2.0.2"
 }
 
