@@ -3,11 +3,9 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import net.ltgt.gradle.errorprone.errorprone
 
 plugins {
-    `java-gradle-plugin`
-    `maven-publish`
     `kotlin-dsl`
-    id("com.gradle.plugin-publish") version "0.17.0"
-    id("com.diffplug.spotless") version "5.17.1"
+    id("com.gradle.plugin-publish") version "1.0.0"
+    id("com.diffplug.spotless") version "6.11.0"
     id("com.github.johnrengelman.shadow") version "7.1.0"
     id("net.ltgt.errorprone") version "2.0.2"
 }
@@ -24,10 +22,6 @@ repositories {
 
 group = "org.zaproxy.gradle"
 version = "0.3.0-SNAPSHOT"
-
-tasks.withType<PluginUnderTestMetadata>().configureEach {
-    pluginClasspath.from(configurations.compileOnly)
-}
 
 val shadowImplementation by configurations.creating
 configurations["compileOnly"].extendsFrom(shadowImplementation)
@@ -54,14 +48,12 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$jupiterVersion")
 
     "errorprone"("com.google.errorprone:error_prone_core:2.7.1")
-    if (JavaVersion.current() == JavaVersion.VERSION_1_8) {
-        "errorproneJavac"("com.google.errorprone:javac:9+181-r4173-1")
-    }
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    val javaVersion = JavaVersion.VERSION_11
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
 }
 
 tasks.withType<JavaCompile>().configureEach {
@@ -91,12 +83,12 @@ spotless {
     }
 }
 
-val pluginName = "crowdin"
 gradlePlugin {
-    (plugins) {
-        create(pluginName) {
+    plugins {
+        create("crowdin") {
             id = "org.zaproxy.crowdin"
             implementationClass = "org.zaproxy.gradle.crowdin.CrowdinPlugin"
+            displayName = "Plugin to integrate with Crowdin"
         }
     }
 }
@@ -106,12 +98,6 @@ pluginBundle {
     vcsUrl = "https://github.com/zaproxy/gradle-plugin-crowdin.git"
     description = "A Gradle plugin to integrate with Crowdin."
     tags = listOf("crowdin")
-
-    (plugins) {
-        pluginName {
-            displayName = "Plugin to integrate with Crowdin"
-        }
-    }
 }
 
 val relocateShadowJar by tasks.registering(ConfigureShadowRelocation::class) {
@@ -121,33 +107,4 @@ val shadowJarTask = tasks.named<ShadowJar>("shadowJar") {
     dependsOn(relocateShadowJar)
     archiveClassifier.set("")
     configurations = listOf(shadowImplementation)
-}
-
-configurations {
-    artifacts {
-        runtimeElements(shadowJarTask)
-        apiElements(shadowJarTask)
-    }
-}
-
-tasks.whenTaskAdded {
-    if (name == "publishPluginJar" || name == "generateMetadataFileForPluginMavenPublication") {
-        dependsOn(tasks.named("shadowJar"))
-    }
-}
-
-tasks.named("jar").configure {
-    enabled = false
-}
-
-afterEvaluate {
-    publishing {
-        publications {
-            withType<MavenPublication> {
-                if (name == "pluginMaven") {
-                    setArtifacts(listOf(shadowJarTask.get()))
-                }
-            }
-        }
-    }
 }
