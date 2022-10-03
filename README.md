@@ -4,4 +4,4 @@ A Gradle plugin to integrate with Crowdin.
 
 Allows to upload, download, and copy localized resources.
 
-The plugin requires at least Java 8 and Gradle 7.4.1.
+The plugin requires at least Java 11 and Gradle 7.5.1.
