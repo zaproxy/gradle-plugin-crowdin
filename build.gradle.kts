@@ -28,7 +28,7 @@ configurations["compileOnly"].extendsFrom(shadowImplementation)
 configurations["testImplementation"].extendsFrom(shadowImplementation)
 
 dependencies {
-    shadowImplementation("com.github.crowdin:crowdin-api-client-java:1.3.10") {
+    shadowImplementation("com.github.crowdin:crowdin-api-client-java:1.5.3") {
         exclude(group = "org.projectlombok")
         exclude(group = "org.apache.httpcomponents")
         exclude(group = "com.fasterxml.jackson.core")
