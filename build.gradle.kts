@@ -21,7 +21,7 @@ repositories {
 }
 
 group = "org.zaproxy.gradle"
-version = "0.3.0-SNAPSHOT"
+version = "0.3.0"
 
 val shadowImplementation by configurations.creating
 configurations["compileOnly"].extendsFrom(shadowImplementation)
@@ -107,4 +107,11 @@ val shadowJarTask = tasks.named<ShadowJar>("shadowJar") {
     dependsOn(relocateShadowJar)
     archiveClassifier.set("")
     configurations = listOf(shadowImplementation)
+}
+
+configurations {
+    artifacts {
+        runtimeElements(shadowJarTask)
+        apiElements(shadowJarTask)
+    }
 }
