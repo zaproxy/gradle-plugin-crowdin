@@ -3,8 +3,10 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import net.ltgt.gradle.errorprone.errorprone
 
 plugins {
+    `java-gradle-plugin`
+    `maven-publish`
     `kotlin-dsl`
-    id("com.gradle.plugin-publish") version "1.0.0"
+    id("com.gradle.plugin-publish") version "0.14.0"
     id("com.diffplug.spotless") version "6.11.0"
     id("com.github.johnrengelman.shadow") version "7.1.0"
     id("net.ltgt.errorprone") version "2.0.2"
@@ -21,7 +23,7 @@ repositories {
 }
 
 group = "org.zaproxy.gradle"
-version = "0.3.0"
+version = "0.3.1"
 
 val shadowImplementation by configurations.creating
 configurations["compileOnly"].extendsFrom(shadowImplementation)
@@ -83,12 +85,12 @@ spotless {
     }
 }
 
+val pluginName = "crowdin"
 gradlePlugin {
-    plugins {
-        create("crowdin") {
+    (plugins) {
+        create(pluginName) {
             id = "org.zaproxy.crowdin"
             implementationClass = "org.zaproxy.gradle.crowdin.CrowdinPlugin"
-            displayName = "Plugin to integrate with Crowdin"
         }
     }
 }
@@ -98,6 +100,12 @@ pluginBundle {
     vcsUrl = "https://github.com/zaproxy/gradle-plugin-crowdin.git"
     description = "A Gradle plugin to integrate with Crowdin."
     tags = listOf("crowdin")
+
+    (plugins) {
+        pluginName {
+            displayName = "Plugin to integrate with Crowdin"
+        }
+    }
 }
 
 val relocateShadowJar by tasks.registering(ConfigureShadowRelocation::class) {
@@ -113,5 +121,27 @@ configurations {
     artifacts {
         runtimeElements(shadowJarTask)
         apiElements(shadowJarTask)
+    }
+}
+
+tasks.whenTaskAdded {
+    if (name == "publishPluginJar" || name == "generateMetadataFileForPluginMavenPublication") {
+        dependsOn(tasks.named("shadowJar"))
+    }
+}
+
+tasks.named("jar").configure {
+    enabled = false
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            withType<MavenPublication> {
+                if (name == "pluginMaven") {
+                    setArtifacts(listOf(shadowJarTask.get()))
+                }
+            }
+        }
     }
 }
