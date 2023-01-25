@@ -143,7 +143,7 @@ public abstract class CrowdinTask extends DefaultTask {
         List<ResponseObject<Directory>> data =
                 getCrowdinClient()
                         .getSourceFilesApi()
-                        .listDirectories(projectId, null, null, null, pageSize, offset)
+                        .listDirectories(projectId, null, null, null, null, pageSize, offset)
                         .getData();
         data.stream().map(ResponseObject::getData).forEach(sink::add);
         if (data.size() == pageSize) {
