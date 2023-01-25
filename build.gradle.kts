@@ -23,7 +23,7 @@ repositories {
 }
 
 group = "org.zaproxy.gradle"
-version = "0.3.1"
+version = "0.4.0-SNAPSHOT"
 
 val shadowImplementation by configurations.creating
 configurations["compileOnly"].extendsFrom(shadowImplementation)
