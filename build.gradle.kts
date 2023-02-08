@@ -7,9 +7,9 @@ plugins {
     `maven-publish`
     `kotlin-dsl`
     id("com.gradle.plugin-publish") version "0.14.0"
-    id("com.diffplug.spotless") version "6.11.0"
-    id("com.github.johnrengelman.shadow") version "7.1.0"
-    id("net.ltgt.errorprone") version "2.0.2"
+    id("com.diffplug.spotless") version "6.14.1"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("net.ltgt.errorprone") version "3.0.1"
 }
 
 repositories {
@@ -43,13 +43,13 @@ dependencies {
     implementation("org.apache.httpcomponents:httpclient:4.5.3")
     implementation("org.projectlombok:lombok:1.18.10")
 
-    testImplementation("org.assertj:assertj-core:3.19.0")
-    val jupiterVersion = "5.7.2"
+    testImplementation("org.assertj:assertj-core:3.24.2")
+    val jupiterVersion = "5.9.2"
     testImplementation("org.junit.jupiter:junit-jupiter-api:$jupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$jupiterVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$jupiterVersion")
 
-    "errorprone"("com.google.errorprone:error_prone_core:2.7.1")
+    "errorprone"("com.google.errorprone:error_prone_core:2.18.0")
 }
 
 java {
@@ -65,7 +65,7 @@ tasks.withType<JavaCompile>().configureEach {
         disableAllChecks.set(true)
         error(
             "MissingOverride",
-            "WildcardImport"
+            "WildcardImport",
         )
     }
 }
