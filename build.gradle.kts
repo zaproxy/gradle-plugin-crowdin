@@ -2,9 +2,9 @@ import net.ltgt.gradle.errorprone.errorprone
 
 plugins {
     `kotlin-dsl`
-    id("com.gradle.plugin-publish") version "1.1.0"
-    id("com.diffplug.spotless") version "6.14.1"
-    id("net.ltgt.errorprone") version "3.0.1"
+    id("com.gradle.plugin-publish") version "1.2.0"
+    id("com.diffplug.spotless") version "6.20.0"
+    id("net.ltgt.errorprone") version "3.1.0"
 }
 
 repositories {
@@ -25,26 +25,24 @@ configurations["compileOnly"].extendsFrom(crowdin)
 configurations["testImplementation"].extendsFrom(crowdin)
 
 dependencies {
-    crowdin("com.github.crowdin:crowdin-api-client-java:1.5.3") {
+    crowdin("com.github.crowdin:crowdin-api-client-java:1.8.0") {
         exclude(group = "org.projectlombok")
         exclude(group = "org.apache.httpcomponents")
         exclude(group = "com.fasterxml.jackson.core")
     }
 
-    val jacksonVersion = "2.12.3"
+    val jacksonVersion = "2.15.2"
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion")
 
     implementation("org.apache.commons:commons-lang3:3.4")
-    implementation("org.apache.httpcomponents:httpclient:4.5.3")
-    implementation("org.projectlombok:lombok:1.18.10")
+    implementation("org.apache.httpcomponents:httpclient:4.5.13")
+    implementation("org.projectlombok:lombok:1.18.24")
 
     testImplementation("org.assertj:assertj-core:3.24.2")
-    val jupiterVersion = "5.9.2"
-    testImplementation("org.junit.jupiter:junit-jupiter-api:$jupiterVersion")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:$jupiterVersion")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$jupiterVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.3")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
-    "errorprone"("com.google.errorprone:error_prone_core:2.18.0")
+    "errorprone"("com.google.errorprone:error_prone_core:2.20.0")
 }
 
 java {
@@ -72,7 +70,7 @@ tasks.withType<Test>().configureEach {
 spotless {
     java {
         licenseHeaderFile("gradle/spotless/license.java")
-        googleJavaFormat("1.7").aosp()
+        googleJavaFormat("1.17.0").aosp()
     }
 
     kotlinGradle {

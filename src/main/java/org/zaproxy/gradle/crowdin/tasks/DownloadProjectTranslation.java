@@ -69,8 +69,10 @@ public abstract class DownloadProjectTranslation extends CrowdinTask {
     private Optional<ProjectBuild> getFinishedBuild(CrowdinProject project) {
         return apiRequest(
                 api ->
-                        api.getTranslationsApi()
-                                .listProjectBuilds(project.getId(), null, null, null).getData()
+                        api
+                                .getTranslationsApi()
+                                .listProjectBuilds(project.getId(), null, null, null)
+                                .getData()
                                 .stream()
                                 .map(ResponseObject::getData)
                                 .filter(e -> "finished".equals(e.getStatus()))
