@@ -179,7 +179,7 @@ public abstract class ListTranslationProgress extends CrowdinTask {
         }
 
         private static Locale createLocale(String langId) {
-            String[] parts = langId.split("-");
+            String[] parts = langId.split("-", 0);
             Locale.Builder builder = new Locale.Builder();
             builder.setLanguage(parts[0]);
             if (parts.length > 1) {
