@@ -57,6 +57,7 @@ public abstract class CrowdinTask extends DefaultTask {
     private Client crowdinClient;
     private SimpleLogger simpleLogger;
 
+    @SuppressWarnings("this-escape")
     protected CrowdinTask() {
         setGroup("Crowdin");
 

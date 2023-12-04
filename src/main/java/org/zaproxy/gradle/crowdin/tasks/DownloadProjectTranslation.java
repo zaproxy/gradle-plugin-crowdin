@@ -40,6 +40,7 @@ import org.zaproxy.gradle.crowdin.internal.configuration.CrowdinProject;
 
 public abstract class DownloadProjectTranslation extends CrowdinTask {
 
+    @SuppressWarnings("this-escape")
     public DownloadProjectTranslation() {
         setDescription("Downloads the latest project translation package.");
 

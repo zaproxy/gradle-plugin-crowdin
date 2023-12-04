@@ -3,7 +3,8 @@ import net.ltgt.gradle.errorprone.errorprone
 plugins {
     `kotlin-dsl`
     id("com.gradle.plugin-publish") version "1.2.0"
-    id("com.diffplug.spotless") version "6.20.0"
+    id("com.diffplug.spotless")
+    id("org.zaproxy.common")
     id("net.ltgt.errorprone") version "3.1.0"
 }
 
@@ -39,10 +40,10 @@ dependencies {
     implementation("org.projectlombok:lombok:1.18.24")
 
     testImplementation("org.assertj:assertj-core:3.24.2")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.9.3")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.1")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
-    "errorprone"("com.google.errorprone:error_prone_core:2.20.0")
+    "errorprone"("com.google.errorprone:error_prone_core:2.23.0")
 }
 
 java {
@@ -52,8 +53,6 @@ java {
 }
 
 tasks.withType<JavaCompile>().configureEach {
-    options.encoding = "UTF-8"
-    options.compilerArgs = listOf("-Xlint:all", "-Xlint:-path", "-Xlint:-options", "-Werror")
     options.errorprone {
         error(
             "MissingOverride",
@@ -67,11 +66,6 @@ tasks.withType<Test>().configureEach {
 }
 
 spotless {
-    java {
-        licenseHeaderFile("gradle/spotless/license.java")
-        googleJavaFormat("1.17.0").aosp()
-    }
-
     kotlinGradle {
         ktlint()
     }

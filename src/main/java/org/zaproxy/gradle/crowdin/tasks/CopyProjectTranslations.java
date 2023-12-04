@@ -32,6 +32,7 @@ import org.zaproxy.gradle.crowdin.internal.configuration.CrowdinProject;
 
 public abstract class CopyProjectTranslations extends CrowdinTask {
 
+    @SuppressWarnings("this-escape")
     public CopyProjectTranslations() {
         setDescription("Copies the project translations to respective directories.");
     }

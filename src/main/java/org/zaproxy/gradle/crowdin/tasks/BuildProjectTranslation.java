@@ -33,6 +33,7 @@ import org.zaproxy.gradle.crowdin.internal.configuration.CrowdinProject;
 
 public abstract class BuildProjectTranslation extends CrowdinTask {
 
+    @SuppressWarnings("this-escape")
     public BuildProjectTranslation() {
         setDescription("Builds the project translation package.");
 

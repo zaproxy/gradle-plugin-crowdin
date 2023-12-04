@@ -54,7 +54,7 @@ public class TokenReplacer {
      * @param tokens the tokens to replace.
      * @throws NullPointerException is tokens it {@code null}.
      */
-    protected void updateTokens(Map<String, String> tokens) {
+    protected final void updateTokens(Map<String, String> tokens) {
         Objects.requireNonNull(tokens, "The tokens must not be null.");
 
         names = new String[tokens.size()];
