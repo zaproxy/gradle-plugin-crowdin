@@ -32,6 +32,7 @@ import org.zaproxy.gradle.crowdin.internal.local.LocalFile;
 
 public abstract class ListSourceFiles extends CrowdinTask {
 
+    @SuppressWarnings("this-escape")
     public ListSourceFiles() {
         setDescription("Lists the source files.");
 

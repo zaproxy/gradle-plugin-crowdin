@@ -59,7 +59,7 @@ public class DirFilenamePair {
         return filename;
     }
 
-    void resolve(TokenReplacer tokenReplacer) {
+    final void resolve(TokenReplacer tokenReplacer) {
         dir = normalize(tokenReplacer.replace(dir));
         ValidationUtils.validateNotEmpty("dir", dir);
 

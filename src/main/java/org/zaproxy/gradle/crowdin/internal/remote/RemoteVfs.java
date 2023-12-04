@@ -31,6 +31,7 @@ public class RemoteVfs extends VfsNode<RemoteItem> {
 
     private final Map<Long, Directory> mapIdDirectory;
 
+    @SuppressWarnings("this-escape")
     public RemoteVfs(List<Directory> directories, List<FileInfo> files) {
         mapIdDirectory =
                 directories.stream()

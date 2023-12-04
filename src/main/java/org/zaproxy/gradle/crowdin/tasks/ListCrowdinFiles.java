@@ -29,6 +29,7 @@ import org.zaproxy.gradle.crowdin.internal.remote.RemoteVfs;
 
 public abstract class ListCrowdinFiles extends CrowdinTask {
 
+    @SuppressWarnings("this-escape")
     public ListCrowdinFiles() {
         setDescription("Lists the files in Crowdin.");
     }

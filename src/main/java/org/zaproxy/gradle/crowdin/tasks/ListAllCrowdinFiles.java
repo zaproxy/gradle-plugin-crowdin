@@ -25,6 +25,7 @@ import org.zaproxy.gradle.crowdin.internal.configuration.CrowdinProject;
 
 public abstract class ListAllCrowdinFiles extends CrowdinTask {
 
+    @SuppressWarnings("this-escape")
     public ListAllCrowdinFiles() {
         setDescription("Lists all the files in Crowdin.");
     }

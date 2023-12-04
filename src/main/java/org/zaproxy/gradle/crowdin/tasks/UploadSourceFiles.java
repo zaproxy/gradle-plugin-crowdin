@@ -40,6 +40,7 @@ import org.zaproxy.gradle.crowdin.internal.remote.RemoteItem;
 
 public abstract class UploadSourceFiles extends CrowdinTask {
 
+    @SuppressWarnings("this-escape")
     public UploadSourceFiles() {
         setDescription("Uploads the source files to Crowdin.");
     }

@@ -38,6 +38,7 @@ import org.zaproxy.gradle.crowdin.internal.configuration.CrowdinProject;
 
 public abstract class ListTranslationProgress extends CrowdinTask {
 
+    @SuppressWarnings("this-escape")
     public ListTranslationProgress() {
         setDescription("Lists the translation progress of the projects.");
 

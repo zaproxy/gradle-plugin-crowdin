@@ -40,6 +40,7 @@ import org.zaproxy.gradle.crowdin.internal.configuration.Source;
 
 public class LocalVfs extends VfsNode<LocalFile> {
 
+    @SuppressWarnings("this-escape")
     public LocalVfs(Path projectDir, CrowdinProject crowdinProject, SimpleLogger logger)
             throws IOException {
         PathBuilder pathBuilder = new PathBuilder(projectDir.getFileName().toString());
