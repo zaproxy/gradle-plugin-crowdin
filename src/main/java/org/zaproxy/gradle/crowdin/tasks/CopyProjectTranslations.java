@@ -21,7 +21,9 @@ package org.zaproxy.gradle.crowdin.tasks;
 
 import java.nio.file.Path;
 import org.gradle.api.file.DirectoryProperty;
+import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Property;
+import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.InputDirectory;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.TaskAction;
@@ -44,6 +46,12 @@ public abstract class CopyProjectTranslations extends CrowdinTask {
     @InputDirectory
     public abstract DirectoryProperty getTranslationsPackageDirectory();
 
+    @Input
+    @Option(
+            option = "file-filter",
+            description = "Filters the files that contain the given strings in their file path.")
+    public abstract ListProperty<String> getFileFilter();
+
     @Option(
             option = "from",
             description = "The file system path to the directory with the translations package.")
@@ -57,9 +65,19 @@ public abstract class CopyProjectTranslations extends CrowdinTask {
         Path baseDir = getProject().getProjectDir().toPath();
         Path packagesDir = getTranslationsPackageDirectory().getAsFile().get().toPath();
 
-        TranslationsCopier copier = new TranslationsCopier(packagesDir, getSimpleLogger());
+        TranslationsCopier copier =
+                new TranslationsCopier(packagesDir, getSimpleLogger(), this::filter);
         for (CrowdinProject project : configuration.getProjects()) {
             copier.copy(project, baseDir);
         }
+    }
+
+    private boolean filter(String entry) {
+        for (String filter : getFileFilter().get()) {
+            if (entry.contains(filter)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

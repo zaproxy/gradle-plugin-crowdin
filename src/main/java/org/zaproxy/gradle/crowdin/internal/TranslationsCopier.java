@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.function.Predicate;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import org.zaproxy.gradle.crowdin.internal.configuration.CrowdinProject;
@@ -34,10 +35,12 @@ public class TranslationsCopier {
 
     private final SimpleLogger logger;
     private final Path packagesDir;
+    private final Predicate<String> filter;
 
-    public TranslationsCopier(Path packagesDir, SimpleLogger logger) {
+    public TranslationsCopier(Path packagesDir, SimpleLogger logger, Predicate<String> filter) {
         this.packagesDir = packagesDir;
         this.logger = logger;
+        this.filter = filter;
     }
 
     public void copy(CrowdinProject project, Path baseOutputDir) {
@@ -85,6 +88,7 @@ public class TranslationsCopier {
         int idx = path.length();
         translations.stream()
                 .filter(e -> e.getName().startsWith(path))
+                .filter(e -> filter.test(e.getName()))
                 .forEach(
                         e -> {
                             if (e.isDirectory()) {
