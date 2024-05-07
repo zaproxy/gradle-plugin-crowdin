@@ -19,7 +19,7 @@ repositories {
 }
 
 group = "org.zaproxy.gradle"
-version = "0.4.0-SNAPSHOT"
+version = "0.4.0"
 
 val crowdin by configurations.creating
 configurations["compileOnly"].extendsFrom(crowdin)
