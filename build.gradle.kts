@@ -2,10 +2,10 @@ import net.ltgt.gradle.errorprone.errorprone
 
 plugins {
     `kotlin-dsl`
-    id("com.gradle.plugin-publish") version "1.2.0"
+    id("com.gradle.plugin-publish") version "1.2.1"
     id("com.diffplug.spotless")
     id("org.zaproxy.common")
-    id("net.ltgt.errorprone") version "3.1.0"
+    id("net.ltgt.errorprone") version "4.0.0"
 }
 
 repositories {
@@ -39,11 +39,11 @@ dependencies {
     implementation("org.apache.httpcomponents:httpclient:4.5.13")
     implementation("org.projectlombok:lombok:1.18.24")
 
-    testImplementation("org.assertj:assertj-core:3.24.2")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.10.1")
+    testImplementation("org.assertj:assertj-core:3.26.0")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
-    "errorprone"("com.google.errorprone:error_prone_core:2.23.0")
+    "errorprone"("com.google.errorprone:error_prone_core:2.28.0")
 }
 
 java {
