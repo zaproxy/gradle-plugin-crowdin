@@ -62,7 +62,7 @@ public abstract class CopyProjectTranslations extends CrowdinTask {
     @TaskAction
     void copy() {
         CrowdinConfiguration configuration = getCrowdinConfiguration();
-        Path baseDir = getProject().getProjectDir().toPath();
+        Path baseDir = getProjectLayout().getProjectDirectory().getAsFile().toPath();
         Path packagesDir = getTranslationsPackageDirectory().getAsFile().get().toPath();
 
         TranslationsCopier copier =

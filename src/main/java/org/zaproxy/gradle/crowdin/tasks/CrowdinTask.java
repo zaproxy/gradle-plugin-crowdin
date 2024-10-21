@@ -32,7 +32,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
+import javax.inject.Inject;
 import org.gradle.api.DefaultTask;
+import org.gradle.api.file.ProjectLayout;
 import org.gradle.api.file.RegularFileProperty;
 import org.gradle.api.provider.MapProperty;
 import org.gradle.api.provider.Property;
@@ -62,6 +64,11 @@ public abstract class CrowdinTask extends DefaultTask {
         setGroup("Crowdin");
 
         getConfigurationTokens().convention(Collections.emptyMap());
+    }
+
+    @Inject
+    protected ProjectLayout getProjectLayout() {
+        throw new UnsupportedOperationException();
     }
 
     @Input
@@ -118,7 +125,9 @@ public abstract class CrowdinTask extends DefaultTask {
     protected LocalVfs createLocalVfs(CrowdinProject crowdinProject) {
         try {
             return new LocalVfs(
-                    getProject().getProjectDir().toPath(), crowdinProject, getSimpleLogger());
+                    getProjectLayout().getProjectDirectory().getAsFile().toPath(),
+                    crowdinProject,
+                    getSimpleLogger());
         } catch (IOException e) {
             throw new CrowdinPluginException(
                     "An error occurred while enumerating the local files, cause: " + e.getMessage(),
