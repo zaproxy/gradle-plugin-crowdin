@@ -2,10 +2,10 @@ import net.ltgt.gradle.errorprone.errorprone
 
 plugins {
     `kotlin-dsl`
-    id("com.gradle.plugin-publish") version "1.2.1"
+    id("com.gradle.plugin-publish") version "1.3.1"
     id("com.diffplug.spotless")
     id("org.zaproxy.common")
-    id("net.ltgt.errorprone") version "4.0.0"
+    id("net.ltgt.errorprone") version "4.1.0"
 }
 
 repositories {
@@ -26,7 +26,7 @@ configurations["compileOnly"].extendsFrom(crowdin)
 configurations["testImplementation"].extendsFrom(crowdin)
 
 dependencies {
-    crowdin("com.github.crowdin:crowdin-api-client-java:1.8.0") {
+    crowdin("com.github.crowdin:crowdin-api-client-java:1.23.0") {
         exclude(group = "org.projectlombok")
         exclude(group = "org.apache.httpcomponents")
         exclude(group = "com.fasterxml.jackson.core")
@@ -39,15 +39,15 @@ dependencies {
     implementation("org.apache.httpcomponents:httpclient:4.5.13")
     implementation("org.projectlombok:lombok:1.18.24")
 
-    testImplementation("org.assertj:assertj-core:3.26.0")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
+    testImplementation("org.assertj:assertj-core:3.27.3")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.11.4")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
-    "errorprone"("com.google.errorprone:error_prone_core:2.28.0")
+    "errorprone"("com.google.errorprone:error_prone_core:2.36.0")
 }
 
 java {
-    val javaVersion = JavaVersion.VERSION_11
+    val javaVersion = JavaVersion.VERSION_17
     sourceCompatibility = javaVersion
     targetCompatibility = javaVersion
 }
